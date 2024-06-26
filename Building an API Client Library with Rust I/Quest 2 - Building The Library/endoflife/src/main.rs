@@ -1,31 +1,13 @@
 use endoflife::rust;
-
-use serde_json;
+use endoflife::request::api_request_single_rust_cycle;
 
 fn main() {
-    let json_str = r#"{
-        "releaseDate": "2024-05-02",
-        "eol": false,
-        "latest": "1.78.0",
-        "latestReleaseDate": "2024-05-02",
-        "lts": false
-    }"#;
+    let rust_version = "1.78";
+    let data = api_request_single_rust_cycle(rust_version).unwrap();
 
-    let json_object = serde_json::from_str::<rust::RustSingleCycle>(json_str);
+    println!("{:#?}", data);
 
-    println!(
-        "{:?}",
-        json_object
-    );
+    let json_str = serde_json::to_string_pretty(&data).unwrap();
 
-    if let Ok(data) = json_object {
-        //println!("{:#?}", data);
-
-        let serialised_data = serde_json::to_string_pretty(&data).unwrap();
-
-        println!("{}", serialised_data);
-        
-    } else {
-        println!("Not able to parse to json. Invalid data format?");
-    }
+    println!("{}", &json_str);
 }
