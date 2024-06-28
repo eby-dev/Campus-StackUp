@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "ahmadabuhasan-stackup-threejs-intro",
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
