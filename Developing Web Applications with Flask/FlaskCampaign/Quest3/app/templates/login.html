@@ -26,23 +26,23 @@
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="content flex column gap-10">
-            <h1 class="purple">{{shopname}} Admin</h1>
-            <a href="/product/add" class="aButton">Add Product</a>
-            <div class="products">
-                {% for product in products %}
-                    <div class="product">
-                        <h2>{{product.title}}</h2>
-                        <p>{{product.description}}</p>
-                        <p class="light">{{product.author}}</p>
-                        <div class="flex row justify-split align-center fill-width">
-                            <a href="/product/{{product.id}}" class="aButton">View</a>
-                            <a href="/product/delete/{{product.id}}" class="aButton warning">Delete</a>
-                        </div>
-                       
-                    </div>
-                {% endfor %}
+    <div class="container center fill-height">
+        <div class="content">
+            <div class="box flex column">
+                <h1 class="purple">Login</h1>
+                <form action="/login" method="POST" class="flex column gap-10">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" placeholder="Username">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" placeholder="Password">
+                    <button type="submit">Login</button>
+                    {% if error %}
+                        <p class="error">{{error}}</p>
+                    {% endif %}
+                    {% if success %}
+                        <p class="success">{{success}}</p>
+                    {% endif %}
+                </form>
             </div>
         </div>
     </div>
