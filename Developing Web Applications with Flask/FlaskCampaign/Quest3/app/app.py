@@ -95,3 +95,50 @@ with app.app_context():
     except exc.IntegrityError:
         db.session.rollback()
         print('Users already exist in database')
+
+@app.route('/')
+def index():
+    return render_template('index.html', shopname = shopname, products = get_products(),user = current_user)
+
+@app.route('/product/<int:id>')
+def product(id):
+    return render_template('product.html', shopname = shopname, product = get_product(id),user = current_user)
+
+@app.route('/product/update/<int:id>', methods = ['POST'])
+@login_required
+def update(id):
+    title = request.form['title']
+    description = request.form['description']
+    price = request.form['price']
+    category = request.form['category']
+    image = request.form['image']
+    if update_product(id, title, description, price, category, image):
+        return redirect(url_for('index'))
+    else:
+        return redirect(url_for('product', id = id, error = "Unable to update product"))
+
+@app.route('/product/add', methods = ['GET', 'POST'])
+@login_required
+def add():
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        price = request.form['price']
+        category = request.form['category']
+        image = request.files['image']
+        image_filename = secure_filename(image.filename)
+        image.save('static/' + image_filename)
+        if add_product(title, description, price, category, image_filename):
+            return redirect(url_for('index'))
+        else:
+            return redirect(url_for('index', error = "Unable to add product"))
+    else:
+        return render_template('add.html', shopname = shopname, user = current_user)
+
+@app.route('/product/delete/<int:id>', methods = ['GET'])
+@login_required
+def delete(id):
+    if delete_product(id):
+        return redirect(url_for('index'))
+    else:
+        return redirect(url_for('index', error = "Unable to delete product"))
